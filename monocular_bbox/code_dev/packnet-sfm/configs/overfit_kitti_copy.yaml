@@ -1,0 +1,48 @@
+arch:
+    max_epochs: 2
+checkpoint:
+    # Folder where .ckpt files will be saved during training
+    filepath: '/home/SamruddhiPai/Desktop/monocular_3d_boundingBox/code_dev/pretrained_models/kitti_trained'
+model:
+    name: 'SelfSupModel'
+    optimizer:
+        name: 'Adam'
+        depth:
+            lr: 0.0002
+        pose:
+            lr: 0.0002
+    scheduler:
+        name: 'StepLR'
+        step_size: 30
+        gamma: 0.5
+    checkpoint_path: '/home/SamruddhiPai/Desktop/monocular_3d_boundingBox/code_dev/pretrained_models/kitti_trained/default_config-overfit_kitti_copy-2023.03.18-23h07m07s/epoch=01_KITTI_tiny-kitti_tiny-velodyne-loss=0.000.ckpt'
+    depth_net:
+        name: 'DepthResNet'
+        version: '18pt'
+    pose_net:
+        name: 'PoseResNet'
+        version: '18pt'
+    params:
+        crop: 'garg'
+        min_depth: 0.0
+        max_depth: 80.0
+datasets:
+    augmentation:
+        image_shape: (192, 640)
+    train:
+        batch_size: 6
+        dataset: ['KITTI']
+        path: ['/home/SamruddhiPai/Desktop/monocular_3d_boundingBox/code_dev/packnet-sfm/data/datasets/KITTI_tiny']
+        split: ['kitti_tiny.txt']
+        depth_type: ['velodyne']
+        repeat: [1]
+    validation:
+        dataset: ['KITTI']
+        path: ['/home/SamruddhiPai/Desktop/monocular_3d_boundingBox/code_dev/packnet-sfm/data/datasets/KITTI_tiny']
+        split: ['kitti_tiny.txt']
+        depth_type: ['velodyne']
+    test:
+        dataset: ['KITTI']
+        path: ['/home/SamruddhiPai/Desktop/monocular_3d_boundingBox/code_dev/packnet-sfm/data/datasets/KITTI_tiny']
+        split: ['kitti_tiny.txt']
+        depth_type: ['velodyne']

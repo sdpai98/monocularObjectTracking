@@ -1,0 +1,324 @@
+DATALOADER:
+  TEST:
+    NUM_WORKERS: 4
+    SAMPLER: InferenceSampler
+  TRAIN:
+    ASPECT_RATIO_GROUPING: false
+    FILTER_EMPTY_ANNOTATIONS: true
+    NUM_WORKERS: 2
+    REPEAT_THRESHOLD: 0.4
+    SAMPLER: RepeatFactorTrainingSampler
+DATASETS:
+  TEST:
+    DATASET_MAPPER: default
+    NAME: kitti_3d_overfit
+    NUSC_SAMPLE_AGGREGATE_IN_INFERENCE: false
+  TRAIN:
+    CANONICAL_BOX3D_SIZES:
+    - - 1.61876949
+      - 3.89154523
+      - 1.52969237
+    - - 0.62806586
+      - 0.82038497
+      - 1.76784787
+    - - 0.56898187
+      - 1.77149234
+      - 1.7237099
+    - - 1.9134491
+      - 5.15499603
+      - 2.18998422
+    - - 2.61168401
+      - 9.22692319
+      - 3.36492722
+    - - 0.5390196
+      - 1.08098042
+      - 1.28392158
+    - - 2.36044838
+      - 15.56991038
+      - 3.5289238
+    - - 1.24489164
+      - 2.51495357
+      - 1.61402478
+    DATASET_MAPPER: default
+    MEAN_DEPTH_PER_LEVEL:
+    - 32.594
+    - 15.178
+    - 8.424
+    - 5.004
+    - 4.662
+    NAME: kitti_3d_overfit
+    NUM_CLASSES: 5
+    STD_DEPTH_PER_LEVEL:
+    - 14.682
+    - 7.139
+    - 4.345
+    - 2.399
+    - 2.587
+DATASET_ROOT: /home/SamruddhiPai/Desktop/dd3d/data/datasets/
+DD3D:
+  FCOS2D:
+    BOX2D_SCALE_INIT_FACTOR: 1.0
+    INFERENCE:
+      NMS_THRESH: 0.75
+      POST_NMS_TOPK: 100
+      PRE_NMS_THRESH: 0.05
+      PRE_NMS_TOPK: 1000
+      THRESH_WITH_CTR: true
+    LOSS:
+      ALPHA: 0.25
+      GAMMA: 2.0
+      LOC_LOSS_TYPE: giou
+    NORM: BN
+    NUM_BOX_CONVS: 4
+    NUM_CLS_CONVS: 4
+    USE_DEFORMABLE: false
+    USE_SCALE: true
+    _VERSION: v2
+  FCOS3D:
+    CANONICAL_BOX3D_SIZES:
+    - - 1.61876949
+      - 3.89154523
+      - 1.52969237
+    - - 0.62806586
+      - 0.82038497
+      - 1.76784787
+    - - 0.56898187
+      - 1.77149234
+      - 1.7237099
+    - - 1.9134491
+      - 5.15499603
+      - 2.18998422
+    - - 2.61168401
+      - 9.22692319
+      - 3.36492722
+    - - 0.5390196
+      - 1.08098042
+      - 1.28392158
+    - - 2.36044838
+      - 15.56991038
+      - 3.5289238
+    - - 1.24489164
+      - 2.51495357
+      - 1.61402478
+    CLASS_AGNOSTIC_BOX3D: false
+    DEPTH_SCALE_INIT_FACTOR: 0.3
+    LOSS:
+      CONF_3D_TEMPERATURE: 1.0
+      MAX_LOSS_PER_GROUP_DISENT: 20.0
+      SMOOTH_L1_BETA: 0.05
+      WEIGHT_BOX3D: 2.0
+      WEIGHT_CONF3D: 1.0
+    MAX_DEPTH: 150.0
+    MEAN_DEPTH_PER_LEVEL:
+    - 32.594
+    - 15.178
+    - 8.424
+    - 5.004
+    - 4.662
+    MIN_DEPTH: 0.1
+    NORM: FrozenBN
+    NUM_CONVS: 4
+    PER_LEVEL_PREDICTORS: false
+    PREDICT_ALLOCENTRIC_ROT: true
+    PREDICT_DISTANCE: false
+    PREPARE_TARGET:
+      CENTER_SAMPLE: true
+      POS_RADIUS: 1.5
+    PROJ_CTR_SCALE_INIT_FACTOR: 1.0
+    SCALE_DEPTH_BY_FOCAL_LENGTHS: true
+    SCALE_DEPTH_BY_FOCAL_LENGTHS_FACTOR: 500.0
+    STD_DEPTH_PER_LEVEL:
+    - 14.682
+    - 7.139
+    - 4.345
+    - 2.399
+    - 2.587
+    USE_DEFORMABLE: false
+    USE_SCALE: true
+  FEATURE_LOCATIONS_OFFSET: none
+  INFERENCE:
+    BEV_NMS_IOU_THRESH: 0.3
+    DO_BEV_NMS: false
+    DO_NMS: true
+    DO_POSTPROCESS: true
+    NUSC_SAMPLE_AGGREGATE: false
+  IN_FEATURES: null
+  NUM_CLASSES: 5
+  SIZES_OF_INTEREST:
+  - 64
+  - 128
+  - 256
+  - 512
+EVALUATORS:
+  KITTI3D:
+    IOU_THRESHOLDS:
+    - 0.5
+    - 0.7
+    ONLY_PREPARE_SUBMISSION: false
+EVAL_ONLY: true
+EVAL_ON_START: false
+FE:
+  BACKBONE:
+    NAME: DLA-34
+    NORM: FrozenBN
+    OUT_FEATURES:
+    - level3
+    - level4
+    - level5
+  BUILDER: build_fcos_dla_fpn_backbone_p67
+  FPN:
+    FUSE_TYPE: sum
+    IN_FEATURES:
+    - level3
+    - level4
+    - level5
+    NORM: FrozenBN
+    OUT_CHANNELS: 256
+    OUT_FEATURES: null
+  OUT_FEATURES: null
+INPUT:
+  AUG_ENABLED: true
+  COLOR_JITTER:
+    BRIGHTNESS:
+    - 0.2
+    - 0.2
+    CONTRAST:
+    - 0.2
+    - 0.2
+    ENABLED: true
+    SATURATION:
+    - 0.2
+    - 0.2
+  CROP:
+    ENABLED: false
+    SIZE:
+    - 0.9
+    - 0.9
+    TYPE: relative_range
+  FORMAT: BGR
+  RANDOM_FLIP:
+    ENABLED: true
+    HORIZONTAL: true
+    VERTICAL: false
+  RESIZE:
+    ENABLED: true
+    MAX_SIZE_TEST: 100000
+    MAX_SIZE_TRAIN: 10000
+    MIN_SIZE_TEST: 384
+    MIN_SIZE_TRAIN:
+    - 288
+    - 304
+    - 320
+    - 336
+    - 352
+    - 368
+    - 384
+    - 400
+    - 416
+    - 448
+    - 480
+    - 512
+    - 544
+    - 576
+    MIN_SIZE_TRAIN_SAMPLING: choice
+MODEL:
+  BOX2D_ON: true
+  BOX3D_ON: true
+  CKPT: /home/SamruddhiPai/Desktop/dd3d/outputs/2023-06-02/18-39-00/model_000199.pth
+  DEPTH_ON: false
+  DEVICE: cuda
+  META_ARCHITECTURE: DD3D
+  PIXEL_MEAN:
+  - 108.742 
+  - 107.7829 
+  - 107.8933
+  PIXEL_STD:
+  - 57.375
+  - 57.12
+  - 58.395
+ONLY_REGISTER_DATASETS: false
+OUTPUT_ROOT: /home/SamruddhiPai/Desktop/dd3d/outputs
+SOLVER:
+  ACCUMULATE_GRAD_BATCHES: 1
+  BASE_LR: 0.0001
+  BIAS_LR_FACTOR: 1.0
+  CHECKPOINT_PERIOD: 100
+  CLIP_GRADIENTS:
+    CLIP_TYPE: value
+    CLIP_VALUE: 1.0
+    ENABLED: false
+    NORM_TYPE: 2.0
+  DDP_FIND_UNUSED_PARAMETERS: false
+  GAMMA: 0.1
+  IMS_PER_BATCH: 16
+  LR_SCHEDULER_NAME: WarmupMultiStepLR
+  MAX_ITER: 2500
+  MIXED_PRECISION_ENABLED: true
+  MOMENTUM: 0.9
+  NESTEROV: false
+  STEPS:
+  - 1200
+  SYNCBN_USE_LOCAL_WORKERS: false
+  WARMUP_FACTOR: 0.0001
+  WARMUP_ITERS: 100
+  WARMUP_METHOD: linear
+  WEIGHT_DECAY: 0.0001
+  WEIGHT_DECAY_BIAS: 0.0001
+  WEIGHT_DECAY_NORM: 0.0
+SYNC_OUTPUT_DIR_S3:
+  ENABLED: false
+  PERIOD: 1000
+  ROOT_IN_S3: ???
+TEST:
+  ADDITIONAL_EVAL_STEPS: []
+  AUG:
+    ENABLED: true
+    FLIP: true
+    MAX_SIZE: 100000
+    MIN_SIZES:
+    - 320
+    - 384
+    - 448
+    - 512
+    - 576
+  ENABLED: true
+  EVAL_ON_START: false
+  EVAL_PERIOD: 500
+  IMS_PER_BATCH: 16
+TMP_DIR: /tmp/
+VIS:
+  BOX3D:
+    DATALOADER:
+      ENABLED: true
+      RENDER_LABELS: true
+      SCALE: 1.0
+    PREDICTIONS:
+      ENABLED: true
+      MIN_DEPTH_CENTER: 0.0
+      RENDER_LABELS: true
+      SCALE: 1.0
+      THRESHOLD: 0.5
+  D2:
+    DATALOADER:
+      COLOR_MODE: image
+      ENABLED: true
+      SCALE: 1.0
+    PREDICTIONS:
+      COLOR_MODE: image
+      ENABLED: true
+      SCALE: 1.0
+      THRESHOLD: 0.4
+  DATALOADER_ENABLED: true
+  DATALOADER_MAX_NUM_SAMPLES: 10
+  DATALOADER_PERIOD: 1000
+  PREDICTIONS_ENABLED: true
+  PREDICTIONS_MAX_NUM_SAMPLES: 20
+WANDB:
+  DRYRUN: false
+  ENABLED: true
+  GROUP: null
+  PROJECT: dd3d
+  TAGS:
+  - kitti-val
+  - dla34
+  - bn
